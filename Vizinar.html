@@ -38,16 +38,17 @@ li a:hover:not(.active) {
 <body>
 
 <ul>
-  <li><a class="active" href='Cezor.html'>Шифр Цезаря</a></li>
-  <li><a href="Vizinar.html">Шифр Виженара</a></li>
+  <li><a href='Cezor.html'>Шифр Цезаря</a></li>
+  <li><a class="active" href="Vizinar.html">Шифр Виженара</a></li>
   <li><a href="SingleEditor.html">Одноразовый блокнот</a></li>
   <li><a href="RandomKey.html">Гаммирование</a></li>
 </ul>
 
 
 <div style="padding:20px;margin-top:30px;background-color:#ECF6F4;height:1500px;">
-<h1>Шифр Цезаря</h1>
+<h1>Шифр Виженара</h1>
 <input type = 'hidden' id = 'textBufer' value = ''>
+<input type = 'hidden' id = 'keyBufer' value = ''>
 <label for = "key">Введите ключ:</label><p>
 <input type = 'text' id = 'key' value = ''>
 
@@ -66,6 +67,7 @@ li a:hover:not(.active) {
 </div>
 
 <script>
+
   window.onload = function()
   {
           var fileInput = document.getElementById('fileInput');
@@ -94,25 +96,40 @@ li a:hover:not(.active) {
   }
   function startEncryptBtnTuped()
   {
-    if (textBufer.value != "")
+    var keyLength = key.value.length
+    console.log(keyLength);
+    var counter = 0;
+    if (textBufer.value != "" && key.value != "")
     {
+
       var map = Array.prototype.map;
       var shifr = map.call(textBufer.value, function(letter)
       {
-        var asciiLetter = letter.charCodeAt(0) + 1;
-        if (letter.charCodeAt(0) == 1106)
+        var asciiLetter = 0
+        var charKey = key.value.charCodeAt(counter) % 65
+        console.log("key is " + charKey)
+        console.log("acii: " + letter.charCodeAt(0) + " : " + letter)
+        asciiLetter = letter.charCodeAt(0) + charKey
+        console.log("preCondition is: " + asciiLetter);
+        counter = counter + 1
+        if (counter == keyLength)
         {
-          asciiLetter = 1040
+          counter = 0
         }
+
+        if (asciiLetter > 1105)
+        {
+          asciiLetter = asciiLetter - 65
+        }
+        console.log("condition is: " + asciiLetter);
         var result = String.fromCharCode(asciiLetter);
-
-
         console.log(result + " : " + asciiLetter)
         return result
       });
       var text = shifr.join('');
       uriContent = "data:application/octet-stream," + encodeURIComponent(text);
       newWindow = window.open(uriContent, 'neuesDokument');
+      alert(text)
 
     } else {
       alert('Вы не выбрали фаил. Попробуйте еще раз.')
@@ -121,29 +138,49 @@ li a:hover:not(.active) {
 
   function startDecryptBtnTuped()
   {
-    if (textBufer.value != "")
+    var keyLength = key.value.length
+    console.log(keyLength);
+    var counter = 0;
+    if (textBufer.value != "" && key.value != "")
     {
+
       var map = Array.prototype.map;
       var shifr = map.call(textBufer.value, function(letter)
       {
-        var asciiLetter = letter.charCodeAt(0) - 1;
-        if (letter.charCodeAt(0) == 1040)
+        var asciiLetter = 0
+        var charKey = key.value.charCodeAt(counter) % 65
+        console.log("key is " + charKey)
+        console.log("acii: " + letter.charCodeAt(0) + " : " + letter)
+        asciiLetter = letter.charCodeAt(0) - charKey
+        console.log("preCondition is: " + asciiLetter);
+        counter = counter + 1
+        if (counter == keyLength)
         {
-          asciiLetter = 1106
+          counter = 0
         }
+
+        if ((letter.charCodeAt(0) >= 1040) && asciiLetter <= 1040)
+        {
+          asciiLetter = asciiLetter + 65
+        }
+        console.log("condition is: " + asciiLetter);
         var result = String.fromCharCode(asciiLetter);
-
-
         console.log(result + " : " + asciiLetter)
         return result
       });
       var text = shifr.join('');
       uriContent = "data:application/octet-stream," + encodeURIComponent(text);
       newWindow = window.open(uriContent, 'neuesDokument');
+      alert(text)
 
     } else {
       alert('Вы не выбрали фаил. Попробуйте еще раз.')
     }
+  }
+
+  function equalizeSizesOfKeyAndText()
+  {
+
   }
 </script>
 
