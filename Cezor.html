@@ -61,8 +61,8 @@ li a:hover:not(.active) {
 
 </div>
 <div>
-<input type="button" id = "startCodBtn" value = "Зашифровать" onclick="startCodBtnTuped()"/>
-<input type="button" id = "startDecodBtn" value = "Расишифровать">
+<input type="button" id = "startCodBtn" value = "Зашифровать" onclick="startEncryptBtnTuped()"/>
+<input type="button" id = "startDecodBtn" value = "Расишифровать" onclick="startDecryptBtnTuped()">
 </div>
 
 <script>
@@ -92,7 +92,7 @@ li a:hover:not(.active) {
           });
 
   }
-  function startCodBtnTuped()
+  function startEncryptBtnTuped()
   {
     if (textBufer.value != "")
     {
@@ -117,8 +117,33 @@ li a:hover:not(.active) {
     } else {
       alert('Вы не выбрали фаил. Попробуйте еще раз.')
     }
+  }
+
+  function startDecryptBtnTuped()
+  {
+    if (textBufer.value != "")
+    {
+      var map = Array.prototype.map;
+      var shifr = map.call(textBufer.value, function(letter)
+      {
+        var asciiLetter = letter.charCodeAt(0) - 1;
+        if (letter.charCodeAt(0) == 1040)
+        {
+          asciiLetter = 1106
+        }
+        var result = String.fromCharCode(asciiLetter);
 
 
+        console.log(result + " : " + asciiLetter)
+        return result
+      });
+      var text = shifr.join('');
+      uriContent = "data:application/octet-stream," + encodeURIComponent(text);
+      newWindow = window.open(uriContent, 'neuesDokument');
+
+    } else {
+      alert('Вы не выбрали фаил. Попробуйте еще раз.')
+    }
   }
 </script>
 

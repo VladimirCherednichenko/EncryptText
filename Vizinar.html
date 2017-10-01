@@ -38,38 +38,115 @@ li a:hover:not(.active) {
 <body>
 
 <ul>
-  <li><a href='Cezor.html'>Шифр Цезоря</a></li>
-  <li><a class="active" href="Vizinar.html">Шифр Виженара</a></li>
-  <li><a href='SingleEditor.html'>Одноразовый блокнот</a></li>
-  <li><a href='RandomKey.html'>Гаммирование</a></li>
+  <li><a class="active" href='Cezor.html'>Шифр Цезаря</a></li>
+  <li><a href="Vizinar.html">Шифр Виженара</a></li>
+  <li><a href="SingleEditor.html">Одноразовый блокнот</a></li>
+  <li><a href="RandomKey.html">Гаммирование</a></li>
 </ul>
 
-<div style="padding:20px;margin-top:30px;background-color:#ECF6F4;height:1500px;">
-<h1>Fixed Top Navigation Bar</h1>
-<h2>Scroll this page to see the effect</h2>
-<h2>The navigation bar will stay at the top of the page while scrolling</h2>
 
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
-<p>Some text some text some text some text..</p>
+<div style="padding:20px;margin-top:30px;background-color:#ECF6F4;height:1500px;">
+<h1>Шифр Цезаря</h1>
+<input type = 'hidden' id = 'textBufer' value = ''>
+<label for = "key">Введите ключ:</label><p>
+<input type = 'text' id = 'key' value = ''>
+
+<div id="page-wrapper">
+
+        <div>
+            Файл:
+            <input type="file" id="fileInput">
+        </div>
+        <pre id="fileDisplayArea"><pre>
+
 </div>
+<div>
+<input type="button" id = "startCodBtn" value = "Зашифровать" onclick="startEncryptBtnTuped()"/>
+<input type="button" id = "startDecodBtn" value = "Расишифровать" onclick="startDecryptBtnTuped()">
+</div>
+
+<script>
+  window.onload = function()
+  {
+          var fileInput = document.getElementById('fileInput');
+          var fileDisplayArea = document.getElementById('fileDisplayArea');
+
+          fileInput.addEventListener('change', function(e)
+          {
+              var file = fileInput.files[0];
+              var textType = /text.*/;
+
+              if (file.type.match(textType))
+              {
+                  var reader = new FileReader();
+
+                  reader.onload = function(e)
+                  {
+                      textBufer.value = reader.result;
+                  }
+
+                  reader.readAsText(file);
+              } else {
+                  fileDisplayArea.innerText = "File not supported!"
+              }
+          });
+
+  }
+  function startEncryptBtnTuped()
+  {
+    if (textBufer.value != "")
+    {
+      var map = Array.prototype.map;
+      var shifr = map.call(textBufer.value, function(letter)
+      {
+        var asciiLetter = letter.charCodeAt(0) + 1;
+        if (letter.charCodeAt(0) == 1106)
+        {
+          asciiLetter = 1040
+        }
+        var result = String.fromCharCode(asciiLetter);
+
+
+        console.log(result + " : " + asciiLetter)
+        return result
+      });
+      var text = shifr.join('');
+      uriContent = "data:application/octet-stream," + encodeURIComponent(text);
+      newWindow = window.open(uriContent, 'neuesDokument');
+
+    } else {
+      alert('Вы не выбрали фаил. Попробуйте еще раз.')
+    }
+  }
+
+  function startDecryptBtnTuped()
+  {
+    if (textBufer.value != "")
+    {
+      var map = Array.prototype.map;
+      var shifr = map.call(textBufer.value, function(letter)
+      {
+        var asciiLetter = letter.charCodeAt(0) - 1;
+        if (letter.charCodeAt(0) == 1040)
+        {
+          asciiLetter = 1106
+        }
+        var result = String.fromCharCode(asciiLetter);
+
+
+        console.log(result + " : " + asciiLetter)
+        return result
+      });
+      var text = shifr.join('');
+      uriContent = "data:application/octet-stream," + encodeURIComponent(text);
+      newWindow = window.open(uriContent, 'neuesDokument');
+
+    } else {
+      alert('Вы не выбрали фаил. Попробуйте еще раз.')
+    }
+  }
+</script>
+
 
 </body>
 </html>
