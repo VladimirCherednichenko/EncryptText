@@ -49,18 +49,29 @@ li a:hover:not(.active) {
 <h1>Шифр Виженара</h1>
 <input type = 'hidden' id = 'textBufer' value = ''>
 <input type = 'hidden' id = 'keyBufer' value = ''>
-<label for = "key">Введите ключ:</label><p>
+<label for = "key">Введите ключ или выберете фаил с ключом:</label><p>
 <input type = 'text' id = 'key' value = ''>
 
 <div id="page-wrapper">
 
         <div>
-            Файл:
+            Файл-текс:
             <input type="file" id="fileInput">
         </div>
         <pre id="fileDisplayArea"><pre>
 
 </div>
+
+<div id="page-wrapper">
+
+        <div>
+            Файл-ключ:
+            <input type="file" id="fileInputKey">
+        </div>
+        <pre id="fileDisplayArea"><pre>
+
+</div>
+
 <div>
 <input type="button" id = "startCodBtn" value = "Зашифровать" onclick="startEncryptBtnTuped()"/>
 <input type="button" id = "startDecodBtn" value = "Расишифровать" onclick="startDecryptBtnTuped()">
@@ -93,20 +104,47 @@ li a:hover:not(.active) {
               }
           });
 
+          fileInputKey.addEventListener('change', function(e)
+          {
+              var file = fileInputKey.files[0];
+              var textType = /text.*/;
+
+              if (file.type.match(textType))
+              {
+                  var reader = new FileReader();
+
+                  reader.onload = function(e)
+                  {
+                      console.log(textBufer.value)
+                      keyBufer.value = reader.result;
+                      console.log(keyBufer.value)
+                      key.value = ""
+                  }
+
+                  reader.readAsText(file);
+              } else {
+                  fileDisplayArea.innerText = "File not supported!"
+              }
+          });
+
   }
   function startEncryptBtnTuped()
   {
-    var keyLength = key.value.length
+    if (key.value != "")
+    {
+      keyBufer.value = key.value
+    }
+    var keyLength = keyBufer.value.length
     console.log(keyLength);
     var counter = 0;
-    if (textBufer.value != "" && key.value != "")
+    if (textBufer.value != "" )
     {
 
       var map = Array.prototype.map;
       var shifr = map.call(textBufer.value, function(letter)
       {
         var asciiLetter = 0
-        var charKey = key.value.charCodeAt(counter) % 65
+        var charKey = keyBufer.value.charCodeAt(counter) % 65
         console.log("key is " + charKey)
         console.log("acii: " + letter.charCodeAt(0) + " : " + letter)
         asciiLetter = letter.charCodeAt(0) + charKey
@@ -138,17 +176,21 @@ li a:hover:not(.active) {
 
   function startDecryptBtnTuped()
   {
-    var keyLength = key.value.length
+    if (key.value != "")
+    {
+      keyBufer.value = key.value
+    }
+    var keyLength = keyBufer.value.length
     console.log(keyLength);
     var counter = 0;
-    if (textBufer.value != "" && key.value != "")
+    if (textBufer.value != "" )
     {
 
       var map = Array.prototype.map;
       var shifr = map.call(textBufer.value, function(letter)
       {
         var asciiLetter = 0
-        var charKey = key.value.charCodeAt(counter) % 65
+        var charKey = keyBufer.value.charCodeAt(counter) % 65
         console.log("key is " + charKey)
         console.log("acii: " + letter.charCodeAt(0) + " : " + letter)
         asciiLetter = letter.charCodeAt(0) - charKey

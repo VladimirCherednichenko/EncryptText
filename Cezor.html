@@ -90,6 +90,8 @@ li a:hover:not(.active) {
               }
           });
 
+
+
   }
   function startEncryptBtnTuped()
   {
@@ -112,7 +114,7 @@ li a:hover:not(.active) {
       var text = shifr.join('');
       uriContent = "data:application/octet-stream," + encodeURIComponent(text);
       newWindow = window.open(uriContent, 'neuesDokument');
-
+      alert(text)
     } else {
       alert('Вы не выбрали фаил. Попробуйте еще раз.')
     }
@@ -139,7 +141,7 @@ li a:hover:not(.active) {
       var text = shifr.join('');
       uriContent = "data:application/octet-stream," + encodeURIComponent(text);
       newWindow = window.open(uriContent, 'neuesDokument');
-
+      alert(text)
     } else {
       alert('Вы не выбрали фаил. Попробуйте еще раз.')
     }
